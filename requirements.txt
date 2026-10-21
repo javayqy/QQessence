@@ -1,0 +1,8 @@
+# QQ 群精华本地存档 —— Python 依赖
+# 安装：pip install -r requirements.txt
+
+Flask>=3.0
+requests>=2.31
+
+# 可选：仅用于 DOM 兜底解析。缺失时 parser.py 会自动降级为纯 __INITIAL_STATE__ 解析。
+lxml>=5.0

@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>QQ 群精华 · 本地存档</title>
+  <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+  <div class="app">
+    <!-- ================= 左侧栏 ================= -->
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="brand-mark">精</div>
+        <div class="brand-text">
+          <h1>QQ 群精华</h1>
+          <p>本地存档 · 离线可查</p>
+        </div>
+      </div>
+
+      <!-- 连接卡片 -->
+      <section class="card" id="connectCard">
+        <header class="card-title">
+          <span>连接</span>
+          <span class="badge badge-idle" id="cookieBadge">未配置</span>
+        </header>
+        <p class="hint" id="cookieHint">
+          在浏览器登录 <code>qun.qq.com</code>，从开发者工具复制 Cookie 粘贴到下方。
+        </p>
+        <textarea id="cookieInput" class="input textarea" rows="4"
+                  placeholder="a=b; c=d; skey=...; p_skey=..." spellcheck="false"></textarea>
+        <div class="row">
+          <button class="btn btn-primary" id="saveCookieBtn" type="button">保存</button>
+          <button class="btn btn-ghost" id="clearCookieBtn" type="button">清除</button>
+        </div>
+        <div class="meta-line" id="cookieMeta">未登录</div>
+      </section>
+
+      <!-- 群卡片 -->
+      <section class="card">
+        <header class="card-title">
+          <span>群</span>
+          <button class="btn btn-tiny" id="reloadGroupsBtn" type="button" title="重新拉取群列表">刷新</button>
+        </header>
+        <div class="row">
+          <input id="gcInput" class="input" type="text" inputmode="numeric"
+                 placeholder="输入群号，如 123456789" maxlength="12" autocomplete="off">
+        </div>
+        <div class="row">
+          <button class="btn btn-primary btn-block" id="fetchBtn" type="button">拉取并保存</button>
+        </div>
+        <label class="checkline">
+          <input type="checkbox" id="downloadOnFetch" checked>
+          <span>拉取后立即下载图片</span>
+        </label>
+        <div class="group-list" id="groupList" hidden></div>
+        <div class="meta-line" id="groupMeta">未拉取群列表</div>
+      </section>
+
+      <!-- 历史记录 -->
+      <section class="card card-grow">
+        <header class="card-title">
+          <span>历史记录</span>
+          <span class="badge badge-idle" id="snapshotCount">0</span>
+        </header>
+        <div class="snapshot-list" id="snapshotList">
+          <div class="list-empty">暂无快照</div>
+        </div>
+      </section>
+
+      <div class="sidebar-foot">
+        <button class="btn btn-ghost btn-block" id="themeBtn" type="button">切换到深色</button>
+      </div>
+    </aside>
+
+    <!-- ================= 主区域 ================= -->
+    <main class="main">
+      <header class="toolbar">
+        <div class="toolbar-title">
+          <h2 id="viewTitle">未选择快照</h2>
+          <p id="viewSubtitle">从左侧选择一条历史记录，或拉取新的群精华</p>
+        </div>
+        <div class="toolbar-actions">
+          <div class="search-wrap">
+            <svg class="search-icon" viewBox="0 0 24 24" aria-hidden="true">
+              <circle cx="11" cy="11" r="7"></circle>
+              <line x1="16.5" y1="16.5" x2="21" y2="21"></line>
+            </svg>
+            <input id="searchInput" class="input search-input" type="search"
+                   placeholder="搜索昵称或内容…" autocomplete="off">
+          </div>
+          <label class="switch" title="只看有图的消息">
+            <input type="checkbox" id="onlyImages">
+            <span class="switch-track"><span class="switch-thumb"></span></span>
+            <span class="switch-label">只看有图</span>
+          </label>
+          <button class="btn btn-ghost" id="downloadBtn" type="button">下载图片</button>
+          <div class="select-wrap">
+            <select id="exportSelect" class="input select">
+              <option value="">导出…</option>
+              <option value="html">导出 HTML</option>
+              <option value="md">导出 Markdown</option>
+              <option value="json">导出 JSON</option>
+            </select>
+          </div>
+        </div>
+      </header>
+
+      <section class="content" id="content" aria-live="polite">
+        <div class="empty-state" id="emptyState">
+          <div class="empty-art">📦</div>
+          <h3>还没有可查看的精华消息</h3>
+          <p>先在左侧保存 Cookie，填写群号后点击「拉取并保存」。<br>没有 Cookie 接口权限时，可直接手动输入群号。</p>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- 灯箱 -->
+  <div class="lightbox" id="lightbox" hidden>
+    <button class="lightbox-close" id="lightboxClose" type="button" aria-label="关闭">×</button>
+    <button class="lightbox-nav lightbox-prev" id="lightboxPrev" type="button" aria-label="上一张">‹</button>
+    <img id="lightboxImage" alt="图片预览">
+    <button class="lightbox-nav lightbox-next" id="lightboxNext" type="button" aria-label="下一张">›</button>
+    <div class="lightbox-counter" id="lightboxCounter"></div>
+  </div>
+
+  <!-- Toast -->
+  <div class="toasts" id="toasts"></div>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>
